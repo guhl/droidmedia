@@ -76,6 +76,7 @@ _DroidMediaBuffer::_DroidMediaBuffer(android::sp<android::GraphicBuffer>& buffer
 
     common.incRef = incRef;
     common.decRef = decRef;
+    ALOGE("droid_media DroidMediaBuffer created");
 }
 
 _DroidMediaBuffer::~_DroidMediaBuffer()

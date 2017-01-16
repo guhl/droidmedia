@@ -24,6 +24,7 @@ extern "C" {
 
 void droid_media_init()
 {
+	ALOGE("droid_media_init called");
     android::ProcessState::self()->startThreadPool();
 }
 

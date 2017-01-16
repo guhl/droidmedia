@@ -80,11 +80,12 @@ struct _DroidMediaRecorder {
   }
 
   void *run() {
+	  ALOGE("DroidMediaRecorder run() called");
     android::status_t err = android::OK;
     while (m_running && err == android::OK) {
       err = tick();
     }
-
+    ALOGE("DroidMediaRecorder run() fell out of loop");
     return NULL;
   }
 
@@ -106,6 +107,7 @@ DroidMediaRecorder *droid_media_recorder_create(DroidMediaCamera *camera, DroidM
 
   android::Size size(meta->parent.width, meta->parent.height);
   DroidMediaRecorder *recorder = new DroidMediaRecorder;
+  ALOGE("DroidMediaRecorder create called");
   recorder->m_cam = camera;
   android::sp<android::Camera> cam(droid_media_camera_get_camera (camera));
   recorder->m_src = android::CameraSource::CreateFromCamera(cam->remote(),
@@ -128,6 +130,7 @@ DroidMediaRecorder *droid_media_recorder_create(DroidMediaCamera *camera, DroidM
 }
 
 void droid_media_recorder_destroy(DroidMediaRecorder *recorder) {
+  ALOGE("DroidMediaRecorder destroy called");
   recorder->m_codec.clear();
   recorder->m_src.clear();
 
@@ -135,6 +138,7 @@ void droid_media_recorder_destroy(DroidMediaRecorder *recorder) {
 }
 
 bool droid_media_recorder_start(DroidMediaRecorder *recorder) {
+  ALOGE("DroidMediaRecorder start called");
   recorder->m_running = true;
 
   int err = recorder->m_codec->start();
@@ -154,6 +158,7 @@ bool droid_media_recorder_start(DroidMediaRecorder *recorder) {
 }
 
 void droid_media_recorder_stop(DroidMediaRecorder *recorder) {
+  ALOGE("DroidMediaRecorder stop called");
   recorder->m_running = false;
   void *dummy;
   pthread_join(recorder->m_thread, &dummy);
