@@ -107,6 +107,7 @@ DroidMediaBuffer *droid_media_buffer_create_from_raw_data(uint32_t w, uint32_t h
   uint8_t *dst;
   uint8_t *src;
 
+  ALOGI("GUHL-DroidMediaBuffer: w=%d, h=%d, strideY=%d, strideUV=%d, format=%d", w, h, strideY, strideUV, format);
   android::sp<android::GraphicBuffer>
     buffer(new android::GraphicBuffer(w, h, format,
 				      android::GraphicBuffer::USAGE_HW_TEXTURE));
