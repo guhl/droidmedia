@@ -27,6 +27,12 @@ $(warning *** ANDROID_MICRO undefined. Assuming 0)
 ANDROID_MICRO = 0
 endif
 
+ifeq ($(strip $(BOARD_USE_MOTO_SF)), true)
+USE_MOTO_SF = 1
+else
+USE_MOTO_SF = 0
+endif
+
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES := droidmedia.cpp \
                    droidmediacamera.cpp \
@@ -86,7 +92,13 @@ LOCAL_MODULE_TARGET_ARCH := arm
 endif
 include $(BUILD_EXECUTABLE)
 
+###############################################################
+# build minisfservice executable
 include $(CLEAR_VARS)
+LOCAL_CLANG := true
+
+LOCAL_C_INCLUDES := frameworks/native/services/surfaceflinger
+
 LOCAL_SRC_FILES := minisf.cpp allocator.cpp
 LOCAL_SHARED_LIBRARIES := libutils \
                           libbinder \
@@ -94,8 +106,15 @@ LOCAL_SHARED_LIBRARIES := libutils \
                           libgui \
                           libcutils \
                           libui
+ifeq ($(strip $(BOARD_USE_MOTO_SF)), true)
+LOCAL_SHARED_LIBRARIES += libsurfaceflinger
+endif
+
 LOCAL_MODULE_TAGS := optional
 LOCAL_CPPFLAGS := -DANDROID_MAJOR=$(ANDROID_MAJOR) -DANDROID_MINOR=$(ANDROID_MINOR) -DANDROID_MICRO=$(ANDROID_MICRO)
+ifeq ($(strip $(BOARD_USE_MOTO_SF)), true)
+LOCAL_CPPFLAGS += -DUSE_MOTO_SF
+endif
 ifneq ($(CM_BUILD),)
 LOCAL_CPPFLAGS += -DCM_BUILD
 endif
